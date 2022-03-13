@@ -13,24 +13,14 @@ example:
 
 class Solution:
     def numWays(self, n: int):
-
-        mod = 1_000_000_007
-
-        """
-        # 递归不是不行，但是会超时
-        if n == 0:
-            return 0
-        elif n <= 3:
-            return n % mod
-        else:
-            return (self.numWays( n - 1) + self.numWays( n - 2)) % mod
-        """
-
-        a = b = 1  # 由于当台阶为0或1时，都返回1
-
-        # 动态规划
-        for i in range(n):
+        if n <= 1:
+            return 1
+        elif n == 2:
+            return 2
+        
+        a, b = 1, 2
+        for i in range(3, n + 1):
             a, b = b, a + b
-
-        return a % mod
+        
+        return b % (10 ** 9 + 7)
 
