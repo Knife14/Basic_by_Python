@@ -22,26 +22,16 @@ tips：
 
 class Solution:
     def fib(self, n: int) -> int:
-        mod = 1_000_000_007
-
-        """
-        nums = [0, 1]
         if n == 0:
-            return nums[0]
+            return 0
         elif n == 1:
-            return nums[1]
-        elif n >= 2:
-            for i in range(1, n):
-                nums.append(nums[i - 1] + nums[i])
-            return nums.pop() % mod
-        """
+            return 1
 
-        # 动态规划是最优解
         a, b = 0, 1
-        for i in range(n):
+        for i in range(2, n + 1):
             a, b = b, a + b
-        # 避免了n == 0时，b的输出不对
-        return a % mod
+        
+        return b % (1_000_000_007)
 
 
 
