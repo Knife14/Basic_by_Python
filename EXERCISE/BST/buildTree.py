@@ -25,7 +25,36 @@ class TreeNode:
         self.left = None
         self.right = None
 
+# 递归1
+class Solution:
+    def buildTree(self, preorder: List[int], inorder: List[int]) -> TreeNode:
+        if len(preorder) != len(inorder):
+            return None
+        elif not preorder or not inorder:
+            return None
+        
+        root = TreeNode(preorder[0])  # determine the root node
+        
+        # get the index of root in the inorder list
+        pos = inorder.index(preorder[0])
+        
+        # get the preorder and the inorder of left tree
+        left_perorder = preorder[1: pos + 1]
+        left_inorder = inorder[:pos]
+        # get the right
+        right_perorder = preorder[pos + 1:]
+        right_inorder = inorder[pos + 1:]
 
+        # recursion
+        left_stree = self.buildTree(left_perorder, left_inorder)
+        right_stree = self.buildTree(right_perorder, right_inorder)
+
+        # result
+        root.left = left_stree
+        root.right = right_stree
+        return root
+        
+# 递归2
 class Solution:
     def buildTree(self, preorder: list, inorder: list):
 
