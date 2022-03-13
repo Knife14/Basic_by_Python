@@ -10,23 +10,21 @@ example:
 输出：0
 """
 
-
+# 二分法：由于本身是一个升序数组，
+# 若m位元素比j位元素要大，可以根据原来升序的定义，确定m的左边都比j位元素大
+# 即最小元素，一定是在m位的右边
+# 时间复杂度： O（logN）    空间复杂度：O（1）
 class Solution:
     def minArray(self, numbers: list) -> int:
-
-        """
-        :param numbers:
-        :return:
-        # 暴力解答
-        res = 1_000_000_007
-
-        for i in numbers:
-            if i <= res:
-                res = i
-
-        return res
-        """
-
-        num = sorted(numbers)
-
-        return num[0]
+        i, j = 0, len(numbers) - 1
+        
+        while i < j:
+            mid = (i + j) // 2
+            if numbers[mid] > numbers[j]:
+                i = mid + 1
+            elif numbers[mid] < numbers[j]:
+                j = mid
+            else:
+                j -= 1
+        
+        return numbers[i]
