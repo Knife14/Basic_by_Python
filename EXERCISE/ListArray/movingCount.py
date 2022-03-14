@@ -22,30 +22,17 @@ tips：
 
 class Solution:
     def movingCount(self, m: int, n: int, k: int) -> int:
-
         visited = set()
 
-        def digitsum(n):
-            ans = 0
-            while n:
-                ans += n % 10
-                n //= 10
-            return ans
-
-        def DFS(i, j, l) -> int:
-            if not 0 <= i < m \
-                or not 0 <= j < n \
-                or not digitsum(i) + digitsum(j) <= l \
-                    or (i, j) in visited:
-                # 越界 or i、j数字位之和大于k or 已经访问过不能重复访问
+        def dfs(i, j, k):
+            if not 0 <= i < m or not 0 <= j < n or (i,j) in visited or \
+                (i % 10 + i // 10 + j % 10 + j // 10) > k:
                 return 0
+            visited.add((i, j))
 
-            visited.add((i,j))
+            return 1 + dfs(i + 1, j, k) + dfs(i - 1, j, k) + dfs(i, j + 1, k) + dfs(i, j - 1, k)
 
-            # 当k = 0时，return 1
-            return 1 + DFS(i + 1, j, l) + DFS(i, j + 1, l)
-
-        return DFS(0, 0, k)
+        return dfs(0, 0, k)
 
 
 if __name__ == '__main__':
