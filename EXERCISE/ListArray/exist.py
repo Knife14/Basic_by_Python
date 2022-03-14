@@ -45,7 +45,8 @@ class Solution:
 
         for i in range(m):
             for j in range(n):
-                # 先找到匹配的首个元素
+                # 不能写成 return DFS(i, j, 0)
+                # 这样会每次循环都返回一个值，这是不对的
                 if DFS(i, j, 0):
                     return True
 
