@@ -31,7 +31,7 @@ class Solution:
             # 遍历节点，直到遍历到cur.val == val为止
             pre, cur = cur, cur.next
 
-        if cur and cur.val == val:
+        if cur:
             # 删除符合 cur.val == val 的cur节点
             pre.next = cur.next
 
