@@ -22,21 +22,24 @@ class TreeNode:
 
 class Solution:
     def isSubStructure(self, A: TreeNode, B: TreeNode) -> bool:
+        if not B or not A:
+            return False
 
-        def recur(a, b):
+        def dfs(a: TreeNode, b: TreeNode):
             if not b:
-                # b 子树已经遍历完了
                 return True
-
-            if not a or a.val != b.val:
-                # 正常判断是不是子树
+            
+            # 防止越界
+            if not a:
                 return False
 
-            return (a.left, b.left) and (a.right, b.right)
+            if a.val != b.val:
+                return False
 
-        # 特例处理，A为空或B为空的时候，直接返回false
+            return dfs(a.left, b.left) and dfs(a.right, b.right)
+        
         # 正常三种情况：
         # ① B是否以A根节点的子树
         # ② B是否A的左子树
         # ③ B是否A的右子树
-        return bool(A and B) and (recur(A, B) or self.isSubStructure(A.left, B) or self.isSubStructure(A.right, B))
+        return dfs(A, B) or self.isSubStructure(A.left, B) or self.isSubStructure(A.right, B)
