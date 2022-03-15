@@ -25,9 +25,11 @@ class Solution:
 
         # 迭代
         # pre->cur , cur -> cur.next
+        # 赋值替换的顺序一定要注意！
         # 结束循环的条件是，cur.next == NULL
         while cur:
             nxt = cur.next
+            
             cur.next = pre
             pre = cur
             cur = nxt
