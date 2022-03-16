@@ -33,6 +33,7 @@ class TreeNode:
 
 
 class Solution:
+    # 队列
     def levelOrder(self, root: TreeNode) -> list:
         res = []
 
@@ -47,17 +48,39 @@ class Solution:
             # 重置每层temp
             temp = collections.deque()
             for _ in range(len(queue)):
-                node = queue.popleft()
+                node = queue.popleft()  # 一定要从queue队列头取出节点
                 if len(res) % 2:
-                    # 偶数层，从左开始打印 - 由于数组下标和逻辑下标相差1，所以这里的表示方式是不同的。
                     temp.appendleft(node.val)
                 else:
-                    # 奇数层，从右开始打印 - 由于数组下标和逻辑下标相差1，所以这里的表示方式是不同的。
                     temp.append(node.val)
                 if node.left:
                     queue.append(node.left)
                 if node.right:
                     queue.append(node.right)
             res.append(list(temp))
+
+        return res
+    
+    # 数组
+    def levelOrder(self, root: TreeNode) -> List[List[int]]:
+        if not root:
+            return []
+
+        res, queue = [], [root]
+        line = 0
+
+        while queue:
+            tmp = []
+            for _ in range(len(queue)):
+                node = queue.pop(0)  # 一定要从数组头取出节点
+                if line % 2 == 0:
+                    tmp.append(node.val)
+                else:
+                    tmp.insert(0, node.val)
+
+                if node.left: queue.append(node.left)
+                if node.right: queue.append(node.right)
+            res.append(tmp)
+            line += 1
 
         return res
