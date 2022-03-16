@@ -21,12 +21,14 @@ class Solution:
         n = 0
 
         for i in pushed:
-            # 入栈
             stack.append(i)
-            # 出栈
+            
+            # 防止越界： stack 可能是空的
             while stack and stack[-1] == popped[n]:
                 stack.pop()
                 n += 1
 
-        # 栈空则True，否则False
-        return not stack
+        if n == len(popped):
+            return True
+        
+        return False
