@@ -1,7 +1,7 @@
 """
 title: 0~n-1中缺失的数字
 writer: 山客
-date: 2021.4.18
+date: 2022.3.22
 example:
 输入: [0,1,3]
 输出: 2
@@ -10,12 +10,16 @@ example:
 输出: 8
 """
 
-
+# 只写了标记索引这么一种方法
+# 时间复杂度： O（N）   空间复杂度： O（N）
 class Solution:
     def missingNumber(self, nums: list) -> int:
+        n = len(nums) + 1
+        pointer = [0] * n
 
-        for i in range(1, len(nums)):
-            if nums[i] != i:
+        for num in nums:
+            pointer[num] = 1
+        
+        for i in range(n):
+            if pointer[i] == 0:
                 return i
-
-        return len(nums)
