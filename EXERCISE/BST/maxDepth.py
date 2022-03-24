@@ -23,14 +23,22 @@ class TreeNode:
         self.left = None
         self.right = None
 
-
+# 深度搜索 + 先序遍历
+# 时间复杂度：O（N） 空间复杂度：O（N）
 class Solution:
     def maxDepth(self, root: TreeNode) -> int:
+        self.res = 0
 
-        def dfs(root: TreeNode):
-            if not root:
-                return 0
+        def dfs(curr: TreeNode, t: int):
+            if curr:
+                t += 1
+            else:
+                self.res = max(t, self.res)
+                return 
+            
+            dfs(curr.left, t)
+            dfs(curr.right, t)
 
-            return 1 + max(dfs(root.left), dfs(root.right))
+        dfs(root, 0)
 
-        return dfs(root)
+        return self.res
