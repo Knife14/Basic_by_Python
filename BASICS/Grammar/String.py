@@ -42,9 +42,9 @@ print("My name is %s and weight is %d kg!" % ('Zara', 21))
 a = ["1", "2", "3", "4"]
 print(" ".join(a))
 
-# 字符串快速切片成数组
+# 字符串快速切片成数组 split
 t = 'hello world'
-print(t.split(' '))
+print(t.split(' '))  # 若split()的参数为空，将会将多个连续空格默认为同一个空格进行处理，否则将按照参数形式严格分割
 
 # 内置函数
 
