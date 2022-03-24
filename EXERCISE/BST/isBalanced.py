@@ -35,33 +35,19 @@ class TreeNode:
         self.left = None
         self.right = None
 
-
+# 先序遍历 + 判断深度：需要注意平衡二叉树的定义，是任一节点的左右子树高度差都在1或1以内才算成立
+# 时间复杂度：O（NlogN） 空间复杂度：O（N）
 class Solution:
     def isBalanced(self, root: TreeNode) -> bool:
         if not root:
-            return False
-
-        deep = [0] * 2
-
-        def count(root: TreeNode):
-
-            n = 0
-
-            if not root:
-                return 0
-
-            n += 1 + max(count(root.left), count(root.right))
-
-            return n
-
-        # 左右子树深度，0 - 左子树， 1 - 右子树
-        # 平衡二叉树定义：左右子树深度不能大于1
-        deep[0] = count(root.left)
-        deep[1] = count(root.right)
-
-        if abs(deep[0] - deep[1]) <= 1 and self.isBalanced(root.left) and self.isBalanced(root.right):
-            # 递归
-            # 确保每个节点的左右子树都符合平衡二叉树定义
             return True
-        else:
-            return False
+
+        return abs(self.depth(root.left) - self.depth(root.right)) <= 1 and \
+            self.isBalanced(root.left) and \
+            self.isBalanced(root.right)
+
+    def depth(self, curr: TreeNode):
+        if not curr:
+            return 0
+        
+        return max(self.depth(curr.left), self.depth(curr.right)) + 1
