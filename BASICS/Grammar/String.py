@@ -42,6 +42,10 @@ print("My name is %s and weight is %d kg!" % ('Zara', 21))
 a = ["1", "2", "3", "4"]
 print(" ".join(a))
 
+# 字符串快速切片成数组
+t = 'hello world'
+print(t.split(' '))
+
 # 内置函数
 
 # string.count(str, beg=0, end=len(string)) - 返回 str 在 string 里面出现的次数，如果 beg 或者 end 指定则返回指定范围内 str 出现的次数
@@ -100,7 +104,7 @@ print("World".rjust(20))
 
 # string.format() - 格式化字符串
 
-# string.isalnum() -m如果 string 至少有一个字符并且所有字符都是字母或数字则返回 True,否则返回 False
+# string.isalnum() - 如果 string 至少有一个字符并且所有字符都是字母或数字则返回 True,否则返回 False
 # string.isalpha() - 如果 string 至少有一个字符并且所有字符都是字母则返回 True,否则返回 False
 # string.isdecimal() - 如果 string 只包含十进制数字则返回 True 否则返回 False.
 # string.isdigit() - 如果 string 只包含数字则返回 True 否则返回 False.
