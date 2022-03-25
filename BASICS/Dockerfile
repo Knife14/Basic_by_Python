@@ -7,9 +7,9 @@
 # -t 添加标签； ./dockerfile_path dockerfile存放路径
 
 # 创建容器并进入容器
-# docker run( / create) -runtime nvidia -e DISPLAY=${DISPLAY} -v /tmp/.X11-unix:/tmp/.X11-unix --name=...  imagename:tag /bin/bash
+# docker run( / create) --runtime=nvidia -e DISPLAY=${DISPLAY} -v /tmp/.X11-unix:/tmp/.X11-unix --name=...  imagename:tag /bin/bash
 # docker attach ContainerID
-# -runtime nvdidia 启动本地显卡；
+# --runtime=nvdidia 启动本地显卡；
 # -v /tmp/.X11-unix:/tmp/.X11-unix 共享本地unix端口；
 # -e DISPLAY=${DISPLAY} 修改可视化环境变量
 # --name=... 给容器命名
