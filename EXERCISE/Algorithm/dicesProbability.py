@@ -19,9 +19,13 @@ class Solution:
             tmp = [0] * (5 * i + 1)  # 一共有 5n + 1 种结果
             for j in range(len(dp)):
                 for k in range(6):
+                    # tmp[j + k] is according to the curr val of dp[j]
+                    # and itself,
+                    # because of j + k == the same value, 
+                    # it maybe have many different answers...
                     tmp[j + k] += dp[j] / 6
             dp = tmp
-
+        
         return dp
 
 
