@@ -14,6 +14,35 @@ example：
 输出: [null,-1,-1]
 """
 
+# 两数组，或两队列均可实现
+class MaxQueue:
+
+    def __init__(self):
+        self.A = []
+        self.B = []  # during all the time, making sure the max value in the first index
+
+    def max_value(self) -> int:
+        if self.B:
+            return self.B[0]
+        else:
+            return -1
+
+    def push_back(self, value: int) -> None:
+        self.A.append(value)
+        while self.B and self.B[-1] < value:
+            self.B.pop()
+        self.B.append(value)
+
+    def pop_front(self) -> int:
+        if not self.A:
+            return -1
+        tmp = self.A.pop(0)
+        if tmp == self.B[0]:
+            self.B.pop(0)
+        
+        return tmp
+
+# 这个写法多少有点赖
 import collections
 
 class MaxQueue:
