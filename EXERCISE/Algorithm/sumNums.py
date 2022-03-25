@@ -10,6 +10,10 @@ example:
 输出：45
 """
 
+# 递归
+# 空间复杂度：O（N）    时间复杂度：O（N）
 class Solution:
     def sumNums(self, n: int) -> int:
-        return (1 + n) * n // 2
+        if n == 1:
+            return 1
+        return n + self.sumNums(n - 1)
