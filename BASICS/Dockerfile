@@ -1,5 +1,6 @@
 # 在ubuntu20.04的docker容器中部署python工程项目
 # 进入 docker 容器以后，需要切换用户，在root用户底下，部分绘制渲染功能将无法正常使用
+# 一般编写习惯，越不会变动的命令放到越前面，因为当dockerfile有所更新需要重新编译时，将会从改变的命令开始往后编译。
 
 # 创建镜像命令
 # docker build -t imagename:tag ./dockerfile_path
