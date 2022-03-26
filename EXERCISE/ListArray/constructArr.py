@@ -7,16 +7,33 @@ example：
 输出: [120,60,40,30,24]
 """
 
-
+# 双指针：
+# i负责正序遍历，记录每个点（0 -> len(a) - 1）的左边乘积
+# j负责反序遍历，记录每个点（len(a) - 1 -> 0）的右边乘积
+# 时间复杂度： O（N）   空间复杂度：O（N）
 class Solution:
-    def constructArr(self, a: list) -> list:
-        b, tmp = [1] * len(a), 1
-        for i in range(1, len(a)):
-            b[i] = b[i - 1] * a[i - 1]  # 下三角
-        for i in range(len(a) - 2, -1, -1):
-            tmp *= a[i + 1]            # 上三角
-            b[i] *= tmp                # 下三角 * 上三角
-        return b
+    def constructArr(self, a: List[int]) -> List[int]:
+        if not a:
+            return []
+
+        left, right = 1, 1
+        i, j = 0, len(a) - 1
+        res = [1] * len(a)
+
+        while i < len(a):
+            res[i] *= left  # Get the product of the left of i
+
+            # update left
+            left *= a[i]
+            i += 1
+
+            res[j] *= right  # Get the right of i
+
+            # update right
+            right *= a[j]
+            j -= 1
+        
+        return res
 
 
 if __name__ == '__main__':
