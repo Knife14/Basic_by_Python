@@ -14,7 +14,51 @@ example：
      因此返回 INT_MIN (−231) 。
 """
 
+# 一个比较简单好理解的转换写法    ————     注意越界！
+# 时间复杂度：O（N）   空间复杂度：O（N）
+class Solution:
+    def strToInt(self, str: str) -> int:
+        ss = str.lstrip()
 
+        # special situation
+        if len(ss) == 1:
+            if ss == '+' or ss == '-':
+                return 0
+            else:
+                return int(ss)
+        elif len(ss) == 0:
+            return 0
+
+        res = []
+        for i in range(len(ss)):
+            # handler + or -
+            if i == 0:
+                if ss[0] == '+' or ss[0] == '-':
+                    res.append(ss[0])
+                    continue
+                elif not ss[i].isdigit():
+                    return 0
+
+            if ss[i].isdigit():
+                res.append(ss[i])
+            else:  # just need int
+                break
+        
+        try:
+            res = int(''.join(res))
+        except:
+            return 0
+
+        # hanlder the max or the min
+        if res > 2 ** 31 - 1:
+            return 2 ** 31 - 1
+        elif res < - 2 ** 31:
+            return - 2 ** 31
+        else:
+            return res
+
+# 一个整理的比较好的判断方法，设置正负标志位
+# 时间复杂度：O（N）   空间复杂度：O（N）
 class Solution:
     def strToInt(self, str: str) -> int:
         str = str.strip()                      # 删除首尾空格
