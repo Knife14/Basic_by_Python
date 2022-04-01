@@ -8,7 +8,7 @@ import cProfile
 import pstats, io
 from pstats import SortKey
 
-class pro(object):
+class cProfiler(object):
     def __init__(self):
         self.pr = None
     
