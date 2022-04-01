@@ -18,32 +18,31 @@
 # docker ps 查看容器
 # docker images 查看镜像
 
-FROM nvidia/opengl:base-ubuntu20.04  # 可以根据自己的意愿选择基于何种公共镜像（docker pub）进行自定义
+FROM nvidia/opengl:base-ubuntu20.04
 
 ENV DEBIAN_FRONTEND=noninteractive
 
-ENV NVIDIA_DRIVER_CAPABILITIES ${NVIDIA_DRIVER_CAPABILITIES},display  # 绘制渲染功能需要配置显卡
+ENV NVIDIA_DRIVER_CAPABILITIES ${NVIDIA_DRIVER_CAPABILITIES},display
 
-RUN sed -i s@/archive.ubuntu.com/@/mirrors.aliyun.com/@g /etc/apt/sources.list  # 更换下载源
+RUN sed -i s@/archive.ubuntu.com/@/mirrors.aliyun.com/@g /etc/apt/sources.list
 
-# 更新下载源列表与下载相应的软件库
-# 下载默认yes需要添加 -y
-# 利用 apt install 下载软件库是为了最恰当的版本适配
 RUN apt-get clean \
-    && apt-get update -y \
-    && apt-get install -y \
+    && apt-get update -y
+
+RUN apt-get install -y \
         libmysqlclient-dev tzdata \
         libgl1-mesa-glx libglib2.0-dev libxcb-xinerama0 \
         python3 python3-dev python3-pip \
-        python3-pyqt5 pyqt5chart-dev
+        python3-pyqt5 python3-pyqt5.qtchart python3-pyside2.qtcharts
 
 ENV LANG C.UTF-8
 
-# 更新 pip 版本
 RUN python3 -m pip install --upgrade pip -i https://pypi.tuna.tsinghua.edu.cn/simple
 
-# 下载无法用 apt install 下载的python库
-RUN pip3 install install -i https://pypi.tuna.tsinghua.edu.cn/simple \
+RUN pip3 install -i https://pypi.tuna.tsinghua.edu.cn/simple \
+    pyqtconsole==1.2.1 \
     grpcio==1.41.0 \
     protobuf==3.19.4 \
-    grpcio-tools==1.41.0
+    grpcio-tools==1.41.0 \
+    fuzzywuzzy==0.18.0 \
+    python-levenshtein==0.12.2
