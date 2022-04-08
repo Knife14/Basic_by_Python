@@ -13,7 +13,21 @@ example:
 解释: 在这种情况下, 没有交易完成, 所以最大利润为 0。
 """
 
+# 普通写法
+# 时间复杂度：O（N）   空间复杂度：O（N）
+class Solution:
+    def maxProfit(self, prices: List[int]) -> int:
+        dp = [0] * (len(prices) + 1)  # 记录当前价格位之前所能获得的最大利润
 
+        cost = 1_000_000_009
+        for i in range(1, len(prices) + 1):
+            cost = min(cost, prices[i - 1])  # 动态更新最低买入花销
+            dp[i] = max(dp[i - 1], prices[i - 1] - cost)  # 当前之前最大利润 与 当前价位 - 当前最低花销 作比较
+
+        return dp[-1]
+
+# 最优写法
+# 时间复杂度： O（N）  空间复杂度： O（1）
 class Solution:
     def maxProfit(self, prices: list) -> int:
         cost, profit = 1_333_333, 0
