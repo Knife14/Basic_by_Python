@@ -64,7 +64,6 @@ class Solution:
                 l2, val = l2.next, l2.val + val
 
             carry, val = divmod(val, 10)  # 除商carry，余数val
-            
             """
             curr.next = ListNode(val)
             curr = curr.next
