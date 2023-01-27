@@ -67,6 +67,7 @@ class Solution:
             """
             curr.next = ListNode(val)
             curr = curr.next
+            python 同时赋多个值时，先处理左边的。即a=b=[1]时，先处理a=[1]，再处理b=[1]
             """
             curr.next = curr = ListNode(val)
 
