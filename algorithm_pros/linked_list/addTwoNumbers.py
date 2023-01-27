@@ -20,7 +20,38 @@ class ListNode:
 
 
 class Solution:
-    def addTwoNumbers(self, l1: ListNode, l2: ListNode) -> ListNode:
+     # 思考过程
+     def addTwoNumbers(self, l1: ListNode, l2: ListNode) -> ListNode:
+        res = ListNode()
+        new_node = ListNode()
+        res.next = new_node
+        car = 0
+        while l1 and l2:
+            if new_node.next:
+                new_node = new_node.next
+            new_node.val = (l1.val + l2.val + car) % 10
+            car = 1 if l1.val + l2.val + car >= 10 else 0
+
+            l1 = l1.next
+            l2 = l2.next
+            if l1 or l2:
+                new_node.next = ListNode()
+        if l1:
+            new_node.next = l1
+        if l2:
+            new_node.next = l2
+        while new_node.next:
+            new_node = new_node.next
+            tmp = new_node.val
+            new_node.val = (tmp + car) % 10
+            car = 1 if (tmp + car) >= 10 else 0
+        if car == 1:
+            new_node.next = ListNode(1)
+
+        return res.next
+     
+     # 简洁写法
+     def addTwoNumbers(self, l1: ListNode, l2: ListNode) -> ListNode:
         head = curr = ListNode()
         carry = val = 0
 
@@ -32,7 +63,7 @@ class Solution:
             if l2:
                 l2, val = l2.next, l2.val + val
 
-            carry, val = divmod(val, 10)  # 进位carry
+            carry, val = divmod(val, 10)  # 除商carry，余数val
 
             curr.next = curr = ListNode(val)
 
