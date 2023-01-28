@@ -11,8 +11,8 @@ P   A   H   N
 A P L S I I G
 Y   I   R
 tips:
-1. 矩阵的列数可以进行内存优化，不过一时半会儿算不出来
-2. 
+1. 矩阵的列数可以进行内存优化
+2. Leetcode上还有别的解法，可以参考
 """
 
 class Solution:
