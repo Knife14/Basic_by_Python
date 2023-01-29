@@ -17,7 +17,6 @@ class Solution:
         
         # 生成所有可能，但不一定合法
         def generate_all(A):
-            print(''.join(A))
             if len(A) == 2 * n:
                 if isVaild(A):
                     res.append(''.join(A))
