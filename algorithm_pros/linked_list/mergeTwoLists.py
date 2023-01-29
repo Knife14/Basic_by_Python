@@ -2,7 +2,7 @@
 title：合并两个排序的链表
 writer：山客
 date：2021.4.9
-key：双指针
+key：迭代
 example：
 输入：1->2->4, 1->3->4
 输出：1->1->2->3->4->4
@@ -17,21 +17,23 @@ class ListNode:
 
 class Solution:
     def mergeTwoLists(self, l1: ListNode, l2: ListNode) -> ListNode:
-
-        # dum 为伪造的头节点
-        cur = dum = ListNode(0)
-
-        while l1 and l2:
-            if l1.val < l2.val:
-                cur.next, l1 = l1, l1.next
+        head = ListNode(0)
+        
+        curr = head
+        while list1 and list2:
+            if list1.val >= list2.val:
+                curr.next = list2
+                list2 = list2.next
             else:
-                cur.next, l2 = l2, l2.next
-            cur = cur.next
-
-        # 两个链表还有剩下的部分节点
-        if l1:
-            cur.next = l1
-        elif l2:
-            cur.next = l2
-
-        return dum.next
+                curr.next = list1
+                list1 = list1.next
+            # 这一步很重要
+            # 把当前节点移动到新增的节点，以便链表的延长
+            curr = curr.next
+        
+        if list1:
+            curr.next = list1
+        if list2:
+            curr.next = list2
+        
+        return head.next
