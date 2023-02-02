@@ -52,5 +52,9 @@ print(list1)
 print(list2.count("a"))  # 统计单个元素出现的次数
 print(Counter(list2))  # 统计所有元素出现的次数，返回dictionary
 
-
+# 同时遍历两个数组
+a = [1, 2, 3]
+b = ['a', 'b', 'c']
+for i, j in zip(a, b):
+  print(i, j)
 
