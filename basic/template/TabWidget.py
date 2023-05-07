@@ -1,21 +1,30 @@
-# -*- coding: utf-8 -*-
+# -*- coding: utf-8 -*- #
 
-import logging
+# -----------------------------
+# Topic: base widget class
+# Author: yang chaohuan
+# Created: 2023.05.07
+# Description: the base class about widget
+# History:
+# <autohr>    <version>    <time>        <desc>
+#  motm14       v0.1    2022/09/22    basic build
+#    m14        v0.2    2023/05/07    complete build as a template
+# -----------------------------
 
-from PyQt5.QtWidgets import QTabBar, QTabWidget, QDialog, QVBoxLayout, QWidget, QMenuBar, QAction
-from PyQt5.QtGui import QMouseEvent, QMoveEvent
-from PyQt5.QtCore import Qt, pyqtSignal, pyqtSlot, QPoint, QEvent
+
+from PySide6.QtWidgets import QTabBar, QTabWidget, QDialog, QVBoxLayout, QWidget, QMenuBar
+from PySide6.QtGui import QMouseEvent, QMoveEvent, QCloseEvent
+from PySide6.QtCore import Qt, QPoint, QEvent, Signal, Slot
 
 
-class TabBar(QTabBar):
-    sig_drag_index = pyqtSignal(int)
-    sig_drag_out_tab = pyqtSignal()
+class SETabBar(QTabBar):
+    sig_drag_index = Signal(int)
+    sig_drag_out_tab = Signal()
     
     def __init__(self, parent):
         super().__init__(parent)
     
         self.drag_start_pos = None
-        
         self.____is_pressed__ = False
     
     def mousePressEvent(self, event: QMouseEvent):
@@ -27,18 +36,23 @@ class TabBar(QTabBar):
             self.____is_pressed__ = True
         return super().mousePressEvent(event)
     
-    def mouseMoveEvent(self, event):
-        if self.tabText(self.currentIndex()) == '场景视图':
-            return
+    def mouseMoveEvent(self, event: QMouseEvent):
+        """
         
+        drag tab widget
+        
+        """
         if abs(self.drag_start_pos.y() - event.pos().y()) > self.height():
             self.sig_drag_index.emit(self.currentIndex())
         return super().mouseMoveEvent(event)
 
     def mouseReleaseEvent(self, event: QMouseEvent):
-        if self.tabText(self.currentIndex()) == '场景视图':
-            return
+        """
         
+        when releasing mouse, check the drag distance.
+        if drag distance is bigger than tabbar height, the widget should be dragged out.
+
+        """
         self.____is_pressed__ = False
         if event.button() == Qt.LeftButton:
             if abs(self.drag_start_pos.y() - event.pos().y()) > self.height():
@@ -46,66 +60,50 @@ class TabBar(QTabBar):
         return super().mouseReleaseEvent(event)
 
 
-class TabDialog(QDialog):
-    sig_drag_widget = pyqtSignal(object, QPoint)
+class SETabDialog(QDialog):
+    sig_drag_widget = Signal(object, QPoint)
+    sig_restore_widget = Signal(object)
     
     def __init__(self, parent):
         super().__init__(parent)
         
-        self.____content__ = None
+        self.content = None
         self.toolbar = None
         self.ontop_action = None
     
     def set_content_widget(self, widget, label):
-        widget.setWindowTitle(label)
+        self.setWindowTitle(label)
+        self.content = widget
+        self.content.setWindowTitle(label)
+        
         new_layout = QVBoxLayout()
-        self.toolbar = QMenuBar(self)
-        self.ontop_action = QAction('置顶')
-        self.ontop_action.triggered.connect(self.set_ontop_state)
-        self.toolbar.addAction(self.ontop_action)
-        new_layout.addWidget(self.toolbar)
-        new_layout.addWidget(widget)
-        new_layout.setStretch(0, 0)
+        new_layout.addWidget(self.content)
         new_layout.setStretch(1, 1)
         self.setLayout(new_layout)
+        
         self.setMaximumSize(1080, 640)
         self.setMinimumSize(640, 480)
-        self.setWindowFlags(Qt.Window | Qt.WindowTitleHint | 
-                            Qt.CustomizeWindowHint)
-        
-        self.____content__ = widget
-    
-    @pyqtSlot()
-    def set_ontop_state(self):
-        action_text = self.ontop_action.text()
-        window = self.windowHandle()
-        if action_text == '置顶':
-            window.setFlags(self.windowFlags() | Qt.WindowStaysOnTopHint)
-            self.ontop_action.setText('取消置顶')
-        elif action_text == '取消置顶':
-            window.setFlags(self.windowFlags())
-            self.ontop_action.setText('置顶')
-    
-    @property
-    def content(self):
-        return self.____content__
     
     def event(self, event: QEvent):
         if isinstance(event, QMoveEvent):
             self.sig_drag_widget.emit(self, event.pos())
+        if isinstance(event, QCloseEvent):
+            self.sig_restore_widget.emit(self.content)
         return super().event(event)
-    
-        
-class TabWidget(QTabWidget):
+
+
+class SETabWidget(QTabWidget):
     
     def __init__(self, parent=None):
         super().__init__(parent)
+
+        self.setTabPosition(QTabWidget.South)
 
         self._drag_index = None
         self._drag_label = None
         self._drag_widget = None
         
-        tabbar = TabBar(self)
+        tabbar = SETabBar(self)
         self.setTabBar(tabbar)
         
         tabbar.sig_drag_index.connect(self.drag_index)
@@ -121,24 +119,25 @@ class TabWidget(QTabWidget):
         
         return index
     
-    @pyqtSlot(int)
+    @Slot(int)
     def drag_index(self, index):
         self._drag_index = index
         self._drag_label = self.tabText(index)
         self._drag_widget = self.widget(index)
     
-    @pyqtSlot()
+    @Slot()
     def drag_out_tab(self):
-        new_widget = TabDialog(self.parentWidget())
+        new_widget = SETabDialog(self.parentWidget())
         new_widget.setAttribute(Qt.WA_DeleteOnClose)
         if self._drag_widget:
             new_widget.set_content_widget(self._drag_widget, self._drag_label)
             new_widget.sig_drag_widget.connect(self.drag_back_tab)
+            new_widget.sig_restore_widget.connect(self.append_normal_tab)
             new_widget.show()
             self._drag_widget.show()
             self.removeTab(self._drag_index)
 
-    @pyqtSlot(object, QPoint)
+    @Slot(object, QPoint)
     def drag_back_tab(self, dialog, pos):
         tab_bar = self.tabBar()
         bar_pos = tab_bar.mapFromGlobal(pos)
