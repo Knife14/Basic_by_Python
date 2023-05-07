@@ -2,7 +2,7 @@
 
 # -----------------------------
 # Topic: base widget class
-# Author: yang chaohuan
+# Author: m14
 # Created: 2023.05.07
 # Description: the base class about widget
 # History:
