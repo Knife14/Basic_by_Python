@@ -49,6 +49,10 @@ class Monitor():
         try:
             while True:
                 data, addr = self.socket_server.recvfrom(65535)
+                # still to need to decode data!
+                # ......
+                # ......
+                # ......
                 print(f"Received packet from {addr}: {data}")
         except KeyboardInterrupt:
             print("Capture stopped.")
